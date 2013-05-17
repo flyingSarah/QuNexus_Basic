@@ -11,12 +11,11 @@ class QuNexusSessionComponent(SessionComponent):
     SessionComponent.update(self)
     self._reselect_track()
 
-  def _bank_right(self):
-    SessionComponent._bank_right(self)
-    self._reselect_track()
-
-  def _bank_left(self):
-    SessionComponent._bank_left(self)
+  """ Because update doesn't get called in Live 9 when we change offsets 
+      We have to manually call reselect_track whenever we bank
+  """
+  def set_offsets(self, track_offset, scene_offset):
+    SessionComponent.set_offsets(self, track_offset, scene_offset)
     self._reselect_track()
 
   def _reselect_track(self):
