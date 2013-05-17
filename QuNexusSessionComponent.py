@@ -8,13 +8,22 @@ class QuNexusSessionComponent(SessionComponent):
     #SessionComponent.__init__(self, num_tracks, num_scenes, *a, **k)
   
   def update(self):
-    self._reselect_track()
     SessionComponent.update(self)
+    self._reselect_track()
+
+  def _bank_right(self):
+    SessionComponent._bank_right(self)
+    self._reselect_track()
+
+  def _bank_left(self):
+    SessionComponent._bank_left(self)
+    self._reselect_track()
 
   def _reselect_track(self):
     tracks_to_use = self.tracks_to_use()
     track = tracks_to_use[self._track_offset] 
     self.song().view.selected_track = track 
+
 
 
 

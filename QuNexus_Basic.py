@@ -5,10 +5,11 @@
 #  Authors:                   #
 #    Sarah Howe  sarah@keithmcmillen.com   #
 #    Conner Lacy  conner@keithmcmillen.com  #
+#    Will Marshall http://willmarshall.me
 #                        #
 #-----------------------------------------------#
 
-
+from __future__ import with_statement
 import Live #Now the Live API is available
 import time #Now we can use time functions for time-stamping our log file outputs
 
@@ -41,19 +42,12 @@ class QuNexus_Basic(ControlSurface):
   
   def __init__(self, c_instance):
     ControlSurface.__init__(self, c_instance)
-    #Turn off rebuild MIDI map until after we're done setting up
-    self.set_suppress_rebuild_requests(True)
-    
-    #set up some variables I want to use in multiple functions
-    self.mixer = None
-    self.session = None
-    
-    #Setup the mixer and session object
-    self._setup_session_control()
-    self._setup_mixer_control()
-    self._setup_device_control()
-    self._setup_transport_control()
-    self.set_suppress_rebuild_requests(False)
+    with self.component_guard():
+      self._setup_mixer_control()
+      self._setup_session_control()
+      self._setup_device_control()
+      self._setup_transport_control()
+      self.set_highlighting_session_component(self.session)
 
   def _setup_transport_control(self):
     self._transport = TransportComponent()
